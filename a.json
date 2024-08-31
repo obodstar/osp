@@ -1,0 +1,134 @@
+{
+    "node_id": "VXNlcjoxMDg1MDE1ODcyNjM0MDQ1Mzgz",
+    "is_primary_website_verified": false,
+    "is_tastemaker": false,
+    "is_inspirational_merchant": false,
+    "first_name": "sintia",
+    "board_count": 1,
+    "profile_reach": 3204,
+    "instagram_data": null,
+    "profile_views": 4215,
+    "is_ads_only_profile": false,
+    "interest_following_count": 6,
+    "last_name": "",
+    "partner": {
+        "node_id": "UGFydG5lcjoxMDg1MDE1ODcyNjM0MDQ1Mzgz",
+        "contact_email": null,
+        "contact_phone": "",
+        "contact_phone_country": {
+            "code": "",
+            "phone_code": "0"
+        },
+        "enable_profile_message": false,
+        "profile_place": null,
+        "enable_profile_address": false
+    },
+    "storefront_search_enabled": false,
+    "indexed": true,
+    "profile_cover": {
+        "source_id": null,
+        "source": "image",
+        "video": null,
+        "images": {
+            "originals": {
+                "url": "https://i.pinimg.com/originals/14/33/54/14335400be59b6838460a85c06bfe3ae.jpg",
+                "width": 675,
+                "height": 379
+            },
+            "1200x": {
+                "url": "https://i.pinimg.com/1200x/14/33/54/14335400be59b6838460a85c06bfe3ae.jpg",
+                "width": 675,
+                "height": 379
+            },
+            "750x": {
+                "url": "https://i.pinimg.com/736x/14/33/54/14335400be59b6838460a85c06bfe3ae.jpg",
+                "width": 675,
+                "height": 379
+            },
+            "736x": {
+                "url": "https://i.pinimg.com/736x/14/33/54/14335400be59b6838460a85c06bfe3ae.jpg",
+                "width": 675,
+                "height": 379
+            },
+            "474x": {
+                "url": "https://i.pinimg.com/474x/14/33/54/14335400be59b6838460a85c06bfe3ae.jpg",
+                "width": 474,
+                "height": 266
+            }
+        },
+        "type": "profilecoversource"
+    },
+    "has_pin_clusters": false,
+    "follower_count": 6,
+    "blocked_by_me": false,
+    "shopping_rec_disabled": false,
+    "allow_marketing_cookies": null,
+    "last_pin_save_time": "Fri, 19 Jul 2024 12:08:25 +0000",
+    "archived_board_count": 10,
+    "should_show_messaging": true,
+    "story_pin_count": 10,
+    "show_creator_profile": true,
+    "secret_board_count": 0,
+    "video_upload_allowed": true,
+    "listed_website_url": null,
+    "profile_discovered_public": true,
+    "eligible_for_wishlist": false,
+    "website_url": null,
+    "has_catalog": false,
+    "full_name": "sintia",
+    "eligible_profile_tabs": [
+        {
+            "id": "17589852163407",
+            "type": "profiletab",
+            "tab_type": 1,
+            "name": "Dibuat",
+            "is_default": true
+        },
+        {
+            "id": "17589852163497",
+            "type": "profiletab",
+            "tab_type": 0,
+            "name": "Disimpan",
+            "is_default": false
+        }
+    ],
+    "is_verified_merchant": false,
+    "ads_only_profile_site": null,
+    "has_shopping_showcase": false,
+    "allow_analytic_cookies": null,
+    "pin_count": 400,
+    "twitter_url": null,
+    "explicit_user_following_count": 4,
+    "show_discovered_feed": false,
+    "domain_url": null,
+    "username": "sintia437",
+    "native_pin_count": 0,
+    "pins_done_count": 0,
+    "has_custom_board_sorting_order": false,
+    "id": "1085015872634045383",
+    "allow_personalization_cookies": null,
+    "show_engagement_tab": true,
+    "image_large_url": "https://i.pinimg.com/140x140_RS/e1/3b/84/e13b84c9a496b50834395520f805e222.jpg",
+    "domain_verified": false,
+    "about": "",
+    "group_board_count": 0,
+    "verified_identity": {},
+    "image_xlarge_url": "https://i.pinimg.com/280x280_RS/e1/3b/84/e13b84c9a496b50834395520f805e222.jpg",
+    "has_showcase": false,
+    "is_private_profile": false,
+    "explicitly_followed_by_me": false,
+    "has_published_pins": true,
+    "storefront_management_enabled": true,
+    "is_partner": true,
+    "location": "",
+    "impressum_url": null,
+    "joined_communities_count": 0,
+    "should_default_comments_off": false,
+    "show_impressum": false,
+    "image_medium_url": "https://i.pinimg.com/75x75_RS/e1/3b/84/e13b84c9a496b50834395520f805e222.jpg",
+    "country": "US",
+    "video_pin_count": 0,
+    "type": "user",
+    "image_small_url": "https://i.pinimg.com/30x30_RS/e1/3b/84/e13b84c9a496b50834395520f805e222.jpg",
+    "following_count": 10
+}
