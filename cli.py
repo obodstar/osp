@@ -32,7 +32,7 @@ class Pinterest:
 
     
         # text dan color
-        green = "\033[38;2;255;212;94m"
+        green = "\033[38;2;23;255;46m"
         reset = "\033[0m"   
         border_char = "*"  
 
@@ -87,7 +87,7 @@ class Pinterest:
         return (self.user_overview.get("id") is not None)
     
     def main(self):
-        
+        self.screen()
         print("+-------------- Profile --------------+")
         print(f"+ Nama {Fore.GREEN}{self.user_overview['full_name']}{Style.RESET_ALL}")
         print(f"+ Nama Pengguna {Fore.GREEN}{self.user_overview['username']}{Style.RESET_ALL}")
@@ -359,57 +359,63 @@ class CreatePin:
             return True
         except KeyboardInterrupt:
             return False
-        
+            
     def create(self):
-        print(f"+------------------------------------+")
-        sleep(3)
-        for index, photo in enumerate(self.photos):
-            try:
-                photo_url = None
-                print(f"Mengunggah gambar {Fore.GREEN}{photo}{Style.RESET_ALL}")
-                sleep(2)
-                while True:
-                    try:
-                        photo_url = self.request.uploadImage(photo)["image_url"]
-                        print(f"Berhasil diunggah dengan tautan {Fore.BLUE}{photo_url}{Style.RESET_ALL}")
-                        sleep(2)
-                        break
-                    except ConnectionError:
-                        continue
-                    except Exception as e:
-                        print(f"{Fore.RED}{self.request.getHtttpError(e)}{Style.RESET_ALL}")
-                        break
-                if photo_url:
-                    kwargs = dict(
-                        [
-                            ("imageUrl", photo_url),
-                            ("boardId", self.board_id),
-                            ("title", self.title),
-                            ("link", self.link),
-                            ("description", self.description),
-                            ("altText", self.alt_text),
-                        ]
-                    )
-                    while True:
-                        try:
-                            print("Membuat pin...")
-                            sleep(2)
-                            response = self.request.createPin(**kwargs)
-                            print(f"{Fore.GREEN}Pin telah diterbitkan dengan id{Style.RESET_ALL} ({Fore.BLUE}{response['id']}{Style.RESET_ALL})")
-                            break
-                        except ConnectionError:
-                            continue
-                        except Exception as e:
-                            print(f"{Fore.RED}Gagal ({self.request.getHtttpError(e)}){Style.RESET_ALL}")
-                            break
-                print(f"+------------------------------------+")
-                if index < (len(self.photos) - 1):
-                    sleep(self.delay)
-            except KeyboardInterrupt:
-                break
-        input("Kembali -> ")
-        self.back()
+      print(f"+------------------------------------+")
+      sleep(3)
+      for index, photo in enumerate(self.photos):
+          try:
+              photo_url = None
+              print(f"Mengunggah gambar {Fore.GREEN}{photo}{Style.RESET_ALL}")
+              sleep(2)
+              while True:
+                  try:
+                      photo_url = self.request.uploadImage(photo)["image_url"]
+                      print(f"Berhasil diunggah dengan tautan {Fore.BLUE}{photo_url}{Style.RESET_ALL}")
+                      sleep(2)
+                      break
+                  except ConnectionError:
+                      continue
+                  except Exception as e:
+                      print(f"{Fore.RED}{self.request.getHtttpError(e)}{Style.RESET_ALL}")
+                      break
+              if photo_url:
+                  kwargs = dict(
+                      [
+                          ("imageUrl", photo_url),
+                          ("boardId", self.board_id),
+                          ("title", self.title),
+                          ("link", self.link),
+                          ("description", self.description),
+                          ("altText", self.alt_text),
+                      ]
+                  )
+                  while True:
+                      try:
+                          print("Membuat pin...")
+                          sleep(2)
+                          response = self.request.createPin(**kwargs)
+                          print(f"{Fore.GREEN}Pin telah diterbitkan dengan id{Style.RESET_ALL} ({Fore.BLUE}{response['id']}{Style.RESET_ALL})")
+                          # Tambahan: Informasi foto ke-n
+                          print(f"Foto ke-{index + 1} berhasil")
+                          break
+                      except ConnectionError:
+                          continue
+                      except Exception as e:
+                          print(f"{Fore.RED}Gagal ({self.request.getHtttpError(e)}){Style.RESET_ALL}")
+                          break
+              print(f"+------------------------------------+")
+              if index < (len(self.photos) - 1):
+                  sleep(self.delay)
+          except KeyboardInterrupt:
+              break
+      input("Kembali -> ")
+      self.back()
 
+        
+
+    
+    
 class CreateBoard:
     back: callable
     request: Requests
@@ -506,3 +512,4 @@ class CreateBoard:
 
 if __name__ == "__main__":
     Pinterest()
+    
