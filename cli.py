@@ -38,13 +38,13 @@ class Pinterest:
 
         # logo
         osp_art = [
-            " #####    #####      ###### ",
-            "#     #  #           #     #",
-            "#     #  #           #     #",
-            "#     #   #####      ###### ",
-            "#     #        #     #      ",
-            "#     #        #     #      ",
-            " #####    #####      #      "
+            " #####    #####   ###### ",
+            "#     #  #        #     #",
+            "#     #  #        #     #",
+            "#     #   #####   ###### ",
+            "#     #        #  #      ",
+            "#     #        #  #      ",
+            " #####    #####   #      "
         ]
 
         details = [
@@ -56,7 +56,6 @@ class Pinterest:
         width = 40
         border_width = width + 2 
 
-       
         print(green + border_char * border_width + reset)
 
         for line in osp_art:
