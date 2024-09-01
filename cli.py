@@ -6,6 +6,15 @@ from pin.utils import Utils
 from colorama import Fore, Back, Style
 from requests.exceptions import (ConnectionError, HTTPError)
 
+#######################################################
+# Name           : OSP (Obod Star Pinterest)          #
+# File           : cli.py                             #
+# Author         : Obod Star                          #
+# Website        : https://obodstar.com/              #
+# Github         : https://github.com/obodstar        #   
+# Python version : 3.0                                #
+#######################################################
+
 class Pinterest:
     user_overview: dict
     request: Requests
