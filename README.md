@@ -1,10 +1,4 @@
 #######################################################
-# Name           : OSP                                #
-# Author         : Obod Star                          #
-# Website        : https://obodstar.com/              #
-# Github         : https://github.com/obodstar        #   
-# Python version : 3.0                                #
-#######################################################
 
 # osp
 
@@ -17,3 +11,5 @@ python cli.py
 
 # versi gui
 python ui.py
+
+#######################################################
