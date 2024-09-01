@@ -62,7 +62,7 @@ class Pinterest:
             "Version: 3.0"
         ]
         
-        width = 40
+        width = 37
         border_width = width + 2 
 
         print(green + border_char * border_width + reset)
