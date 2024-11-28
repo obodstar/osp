@@ -443,20 +443,19 @@ class CreatePin:
                             # Tambahan: Informasi foto ke-n
                             print(f"Berhasil diunggah dengan judul {Fore.BLUE}{self.title}{Style.RESET_ALL}")
                             print(f"Foto ke-{index + 1} berhasil")
-                            print(f"+----------------------------------------------------+")
-                            if index < (len(self.photos) - 1):
-                                for remaining in range(self.delay, 0, -1):
-                                    print(f"{Fore.YELLOW}Mengunggah dalam {remaining} detik...{Style.RESET_ALL}", end="\r", flush=True)
-                                    sleep(2)
-                                    print(" " * 50, end="\r")
-                            
-                                break
+                            break
                         except ConnectionError:
                             continue
                         except Exception as e:
                             print(f"{Fore.RED}Gagal ({self.request.getHtttpError(e)}){Style.RESET_ALL}")
                             break
-                
+                    print(f"+----------------------------------------------------+")
+                    if index < (len(self.photos) - 1):
+                            for remaining in range(self.delay, 0, -1):
+                                    print(f"{Fore.YELLOW}Mengunggah dalam {remaining} detik...{Style.RESET_ALL}", end="\r", flush=True)
+                                    sleep(2)
+                                    print(" " * 50, end="\r")
+                            
             except KeyboardInterrupt:
                 break
         input("Kembali -> ")
