@@ -11,9 +11,6 @@ from rich.table import Table
 import random
 import hashlib
 import string
-from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.chrome.options import Options
 from bs4 import BeautifulSoup
 import requests
 from requests.exceptions import RequestException
@@ -35,143 +32,7 @@ class Pinterest:
     # coding baru obdstar
     def download_foto(self):
         # Nonaktifkan timestamp di log
-        console = Console(log_time=False)
-
-        def generate_random_filename(extension=".jpg"):
-            """Generate random filenames with MD5 hash."""
-            random_string = ''.join(random.choices(string.ascii_letters + string.digits, k=32))
-            return hashlib.md5(random_string.encode()).hexdigest() + extension
-
-        def setup_chromedriver():
-            """Setup ChromeDriver for Termux."""
-            chrome_options = Options()
-            chrome_options.add_argument("--headless")  # Headless mode
-            chrome_options.add_argument("--disable-gpu")
-            chrome_options.add_argument("--no-sandbox")
-            chrome_options.add_argument("--disable-dev-shm-usage")
-            chrome_service = Service("/data/data/com.termux/files/usr/bin/chromedriver")  # Lokasi driver ARM
-            return webdriver.Chrome(service=chrome_service, options=chrome_options)
-
-        def get_all_images(driver):
-            """Scroll halaman untuk memuat semua gambar dan mengembalikan elemen gambar dengan kualitas terbaik."""
-            console.log("Proses Scroll halaman...")
-            last_height = 0
-            all_images = set()  # Menggunakan set untuk menghindari duplikasi
-            try:
-                while True:
-                    soup = BeautifulSoup(driver.page_source, "html.parser")
-                    images = soup.find_all("img")
-                    for img in images:
-                        # Coba ambil URL dari atribut data-pin-media, data-src, atau src
-                        high_res = img.get("data-pin-media") or img.get("data-src") or img.get("src")
-                        if high_res:
-                            # Jika URL mengandung resolusi rendah (misalnya 236x), ganti dengan resolusi lebih tinggi (misalnya 736x)
-                            if "236x" in high_res:
-                                high_res = high_res.replace("236x", "736x")
-                            elif "474x" in high_res:
-                                high_res = high_res.replace("474x", "736x")
-                            all_images.add(high_res)
-
-                    # Update jumlah foto yang terdeteksi
-                    console.log(f"Sedang mengumpulkan  : {len(all_images)} foto")
-
-                    driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-                    time.sleep(5)  # Tambahkan waktu tunggu agar gambar HD sepenuhnya dimuat
-
-                    # Cek apakah tinggi halaman berubah (sudah mencapai akhir)
-                    new_height = driver.execute_script("return document.body.scrollHeight")
-                    if new_height == last_height:
-                        break
-                    last_height = new_height
-            except KeyboardInterrupt:
-                console.log("[red]Proses dihentikan oleh pengguna.[/red]")
-            finally:
-                console.log(f"Total gambar yang terdeteksi: {len(all_images)}")
-            return list(all_images)
-
-        def download_images(images, download_path, max_images):
-            """Unduh gambar dari daftar gambar dengan retry otomatis jika terjadi error jaringan."""
-            console.log(f"Mengunduh {max_images} gambar...")
-            success_count = 0
-
-            # Membuat folder unduhan jika belum ada
-            if not os.path.exists(download_path):
-                os.makedirs(download_path)
-
-            # Mengunduh gambar
-            for idx, img_url in enumerate(images[:max_images]):
-                retry_count = 0
-                while retry_count < 5:  # Maksimal 5 kali percobaan jika koneksi gagal
-                    try:
-                        img_data = requests.get(img_url, timeout=10).content
-                        file_name = os.path.join(download_path, generate_random_filename())
-                        with open(file_name, "wb") as f:
-                            f.write(img_data)
-                        success_count += 1
-
-                        # Tampilkan panel untuk setiap foto yang berhasil diunduh
-                        panel = Panel(f"[blue]Foto ke-{idx + 1} berhasil diunduh![/blue]\n[bold]Lokasi:[/bold] {file_name}",
-                                    title=f"[bold cyan]Foto {idx + 1}[/bold cyan]",
-                                    border_style="green")
-                        console.print(panel)
-                        break  # Keluar dari loop retry jika berhasil
-
-                    except RequestException as e:
-                        retry_count += 1
-                        console.print(f"[yellow]Koneksi gagal saat mengunduh gambar {idx + 1}. Percobaan ulang ({retry_count}/5)...[/yellow]")
-                        time.sleep(5)  # Tunggu 5 detik sebelum mencoba lagi
-
-                    except Exception as e:
-                        console.print(f"[red]Gagal mengunduh gambar {idx + 1}: {e}[/red]")
-                        break
-
-                if retry_count == 5:
-                    console.print(f"[red]Gagal mengunduh gambar {idx + 1} setelah 5 kali percobaan.[/red]")
-
-            console.log(f"Total berhasil diunduh: [green]{success_count}[/green] dari {max_images} gambar.")
-        
-
-        def input_with_validation(prompt, validation_func, error_message):
-            """Meminta input dari pengguna dengan validasi."""
-            while True:
-                user_input = input(prompt)
-                if validation_func(user_input):
-                    return user_input
-                else:
-                    console.print(f"[red]{error_message}[/red]")
-
-        if __name__ == "__main__":
-            # Meminta URL papan dengan validasi agar tidak kosong
-            board_url = input_with_validation("Masukkan URL papan Pinterest: ", lambda x: x.startswith("http"), "URL harus valid dan dimulai dengan 'http'.")
-
-            download_path = "/storage/0003-90F4/pin"
-
-            # Inisialisasi driver Selenium
-            driver = setup_chromedriver()
-            driver.get(board_url)
-            time.sleep(3)  # Tunggu pemuatan awal
-
-            # Scroll dan ambil gambar
-            images = get_all_images(driver)
-            driver.quit()  # Tutup browser
-
-            total_images = len(images)
-            console.print(f"Papan memiliki total [bold yellow]{total_images}[/bold yellow] foto.")
-
-            # Meminta jumlah foto yang ingin diunduh
-            while True:
-                try:
-                    max_images = int(input(f"jumlah foto (max {total_images}): "))
-                    if 0 < max_images <= total_images:
-                        break
-                    else:
-                        console.print("[red]Masukkan jumlah yang valid.[/red]")
-                except ValueError:
-                    console.print("[red]Masukkan angka yang valid.[/red]")
-
-            # Mengunduh gambar
-            download_images(images, download_path, max_images)
-
+        print("fitur belum dibuat🙏")
     def __init__(self):
         self.user_overview = dict()
         self.request = Requests()
@@ -318,21 +179,26 @@ class Pinterest:
         self.screen()
         names = [
         "Cili",
-        "Lala",
         "Sueb",
         "Syfa",
         "Hanna",
         "Clara",
         "Eleanor",
-        "Antonella",
+        "Antonel",
         "Ciya",
         "Eye",
-        "Nia",
-        "Moza"
+        "Nguyen",
+        "Cybila",
+        "Zara",
+        "Jenner",
+        "Rossi",
+        "-------",
+        "Lala",
+        "Moza",
+        "Nia"
     ]
         emails = [
         "rroji4027@gmail.com",
-        "oobod011@gmail.com",
         "suebkosim@gmail.com",
         "oman6363123@gmail.com",
         "ssakri497@gmail.com",
@@ -341,8 +207,15 @@ class Pinterest:
         "odabodab04@gmail.com",
         "ssueb517@gmail.com",
         "eyezaixs63@gmail.com",
-        "marwaditania@gmail.com",
-        "mozamoja199@gmail.com"
+        "rizki63rizki@gmail.com",
+        "doborat63@gmail.com",
+        "konakw4001@gmail.com",
+        "ucupsurucup39@gmail.com",
+        "otongsurotong1000@gmail.com",
+        "---------------------------",
+        "oobod011@gmail.com",
+        "mozamoja199@gmail.com",
+        "marwaditania@gmail.com"
     ]
         
         pw="korbanhack"
