@@ -36,6 +36,8 @@ class Pinterest:
     def __init__(self):
         self.user_overview = dict()
         self.request = Requests()
+        self.usernamePint = open(".username","r").read()
+        self.idPint = open(".id","r").read()
         self.screen()
         self.init()
 
@@ -72,8 +74,8 @@ class Pinterest:
         ]
 
         details = [
-            "OSP (Obod Spam Pinterest)",
-            "Created By Obod Star"
+            "OSP (Otomatis Spam Pinterest)",
+            "Created By Obod AF"
         ]
         
         width = 52
@@ -96,7 +98,8 @@ class Pinterest:
         while True:
             try:
                 print(end="\rmengecek sesi login....")
-                self.user_overview = self.request.getUserOverview("me")
+                
+                self.user_overview = self.request.getUserOverview(self.idPint)
                 import json
                 open("a.json", "w").write(json.dumps(self.user_overview, indent=4))
                 break
@@ -132,7 +135,7 @@ class Pinterest:
         # Membuat panel dengan border Rich
         panel = Panel(
             content,
-            title="[bold cyan]Profil[/bold cyan]",
+            title="[bold cyan]Profil Akun[/bold cyan]",
             border_style="green"
         )
         console.print(panel)
@@ -141,12 +144,12 @@ class Pinterest:
     
         # Membuat tabel untuk menu
         table = Table(title="Menu", style="green")
-        table.add_column("Fitur", justify="center")
-        table.add_column("Deskripsi", justify="left")
+        table.add_column("No", justify="center")
+        table.add_column("Fitur", justify="left")
         
         # Menambahkan baris menu
-        table.add_row("[blue]1[/blue]", "Buat Pin")
-        table.add_row("[blue]2[/blue]", "Buat Papan Board")
+        table.add_row("[blue]1[/blue]", "Buat Pin Masal")
+        table.add_row("[blue]2[/blue]", "Buat Papan")
         table.add_row("[blue]3[/blue]", "Download Foto")
         table.add_row("[red]0[/red]", "Keluar")
         
@@ -175,66 +178,7 @@ class Pinterest:
             else:
                 print(f"{Fore.RED}pilihan tidak tersedia{Style.RESET_ALL}")
 
-    def login(self):
-        self.screen()
-        names = [
-        "Cili",
-        "Sueb",
-        "Syfa",
-        "Hanna",
-        "Clara",
-        "Eleanor",
-        "Antonel",
-        "Ciya",
-        "Eye",
-        "Nguyen",
-        "Cybila",
-        "Zara",
-        "Jenner",
-        "Rossi",
-        "-------",
-        "Lala",
-        "Moza",
-        "Nia"
-    ]
-        emails = [
-        "rroji4027@gmail.com",
-        "suebkosim@gmail.com",
-        "oman6363123@gmail.com",
-        "ssakri497@gmail.com",
-        "utasueb@gmail.com",
-        "sukri63sukri@gmail.com",
-        "odabodab04@gmail.com",
-        "ssueb517@gmail.com",
-        "eyezaixs63@gmail.com",
-        "rizki63rizki@gmail.com",
-        "doborat63@gmail.com",
-        "konakw4001@gmail.com",
-        "ucupsurucup39@gmail.com",
-        "otongsurotong1000@gmail.com",
-        "---------------------------",
-        "oobod011@gmail.com",
-        "mozamoja199@gmail.com",
-        "marwaditania@gmail.com"
-    ]
-        
-        pw="korbanhack"
-    
-        console = Console()
-    
-        # Membuat tabel untuk daftar akun email
-        table = Table(title="Akun Email", style="green")
-        table.add_column("Nama", justify="left")
-        table.add_column("Email", justify="left")
-        table.add_column("Password", justify="left")
-        
-        # Menambahkan baris ke tabel
-        for name, email in zip(names, emails):
-            table.add_row(name, email, pw)
-        
-        # Menampilkan tabel
-        console.print(table,justify="center")
-        
+
         print("+----------------------- Login ----------------------+")
         print(f"+ {Fore.BLUE}1{Style.RESET_ALL}. Dengan Kredensial")
         print(f"+ {Fore.BLUE}2{Style.RESET_ALL}. Dengan Cookie")
@@ -304,7 +248,6 @@ class Pinterest:
                     cookie = Utils.cookie_string_to_dict(cookie)
                 self.request.cookies.clear()
                 self.request.cookies.update(cookie)
-                self.user_overview = self.request.getUserOverview("me")
                 self.request.writeSession(cookie)
             except KeyboardInterrupt:
                 break
@@ -366,12 +309,14 @@ class CreatePin:
         self.link = None  # Inisialisasi tautan
         self.title = None  # Judul yang dipilih
         self.description = None  # Deskripsi yang dipilih
+        self.usernamePint = open(".username","r").read()
+        self.idPint = open(".id","r").read()
         self.main()
 
     def main(self):
         while True:
             try:
-                self.boards = self.request.getAllBoards("me")
+                self.boards = self.request.getAllBoards(self.usernamePint)
                 break
             except ConnectionError:
                 continue
@@ -385,7 +330,7 @@ class CreatePin:
         else:
             print(f"\n+--------------------- {Back.BLUE} Step 1 {Style.RESET_ALL} ---------------------+")
             for no, item in enumerate(self.boards):
-                print(f"+ {Fore.BLUE}{str(no + 1)}{Style.RESET_ALL}. {Fore.GREEN}{item['name']}{Style.RESET_ALL} ({Fore.BLUE}{item['id']}{Style.RESET_ALL})")
+                print(f"+ {Fore.BLUE}{str(no + 1)}{Style.RESET_ALL}. {Fore.GREEN}{item.get('name')}{Style.RESET_ALL} ({Fore.BLUE}{item.get('id')}{Style.RESET_ALL})")
             while True:
                 try:
                     self.board_id = self.boards[int(input("Pilih Papan -> ")) - 1]["id"]
@@ -413,7 +358,7 @@ class CreatePin:
         print("Masukan folder yang berisi daftar foto untuk diposting ke pinterest secara masal\n")
         while True:
             try:
-                directory = input("? Folder (contoh: /storage/0003-90F4/ ) : ")
+                directory = input("? Folder (contoh: D:\\belajar\osp-new\\1home ) : ")
                 if not os.path.exists(directory):
                     print(f"{Fore.RED}Folder '{directory}' tidak ditemukan{Style.RESET_ALL}")
                     continue
@@ -445,7 +390,7 @@ class CreatePin:
     def get_title(self):
         while True:
             try:
-                file_path = input("file judul ( /storage/0003-90F4/judul/home.txt ): ").strip()
+                file_path = input("file judul ( D:\\belajar\osp-new\judul\home.txt ): ").strip()
 
                 if not file_path:  # Jika pengguna tidak mengisi apa-apa
                     print("Judul tidak akan diisi.")
@@ -478,7 +423,7 @@ class CreatePin:
     def get_description(self):
         while True:
             try:
-                file_path = input("file deskripsi ( /storage/0003-90F4/deskripsi/home.txt ): ").strip()
+                file_path = input("file deskripsi ( D:\\belajar\osp-new\deskripsi\home.txt ): ").strip()
 
                 if not file_path:  # Jika pengguna tidak mengisi apa-apa
                     print("Deskripsi tidak akan diisi.")
@@ -511,7 +456,7 @@ class CreatePin:
     def get_link(self):
         while True:
             try:
-                file_path = input("file tautan ( /storage/0003-90F4/link/link.txt ): ").strip()
+                file_path = input("file tautan ( D:\\belajar\osp-new\link\link.txt ): ").strip()
 
                 if not file_path:
                     print("Tidak menggunakan tautan untuk posting.")
